@@ -11,12 +11,14 @@ public:
     RingQueue(int cap);
     ~RingQueue();
 
+    void Reset();
+
     bool PushData(const DataType &data);
     void PopData(std::vector<DataType> &data_arr);
 
 private:
-    std::vector<DataType> ring;
     int _cap;
+    std::vector<DataType> ring;
     sem_t blank_sem;
     sem_t data_sem;
     int c_step;
@@ -24,11 +26,17 @@ private:
 };
 
 template<class DataType>
-RingQueue<DataType>::RingQueue(int cap):_cap(cap), ring(cap)
+void RingQueue<DataType>::Reset()
 {
     c_step = p_step = 0;
-    sem_init(&blank_sem, 0, cap);
+    sem_init(&blank_sem, 0, _cap);
     sem_init(&data_sem, 0, 0);
+}
+
+template<class DataType>
+RingQueue<DataType>::RingQueue(int cap):_cap(cap), ring(cap)
+{
+    Reset();
 }
 
 template<class DataType>

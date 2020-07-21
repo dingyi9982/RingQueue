@@ -1,5 +1,13 @@
 ### Build
 
-1. g++ -g -c test_RingQueue.cpp RingQueue.cpp
+1. CMake
 
-2. g++ -o test_RingQueue.exe test_RingQueue.o RingQueue.o
+a. g++ -std=c++11 -lpthread -c test_RingQueue.cpp
+
+b. g++ -std=c++11 -o test_RingQueue.exe test_RingQueue.o
+
+2. gcc
+
+a. mkdir build
+
+b. cmake ..
