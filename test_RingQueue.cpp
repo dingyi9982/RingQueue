@@ -5,7 +5,7 @@
 #include <string>
 #include <pthread.h>
 
-const int num = 1;
+const int num = 3;
 
 typedef struct {
     std::string url;

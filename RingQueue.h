@@ -13,7 +13,10 @@ public:
 
     void Reset();
 
+    bool IsEmpty();
+    bool IsFull();
     bool PushData(const DataType &data);
+    bool PopOneData(DataType &data);
     void PopData(std::vector<DataType> &data_arr);
 
 private:
@@ -47,6 +50,22 @@ RingQueue<DataType>::~RingQueue()
 }
 
 template<class DataType>
+bool RingQueue<DataType>::IsEmpty()
+{
+    int data_sem_value = 0;
+    sem_getvalue(&data_sem, &data_sem_value);
+    return data_sem_value == 0;
+}
+
+template<class DataType>
+bool RingQueue<DataType>::IsFull()
+{
+    int blank_sem_value = 0;
+    sem_getvalue(&blank_sem, &blank_sem_value);
+    return blank_sem_value == 0;
+}
+
+template<class DataType>
 bool RingQueue<DataType>::PushData(const DataType &data)
 {
     if (!sem_trywait(&blank_sem)) {
@@ -58,6 +77,21 @@ bool RingQueue<DataType>::PushData(const DataType &data)
     } else {
         return false;
     }
+}
+
+template<class DataType>
+bool RingQueue<DataType>::PopOneData(DataType &data)
+{
+    bool ret = false;
+    if (!sem_trywait(&data_sem)) {
+        data = ring[c_step];
+        sem_post(&blank_sem);
+        c_step++;
+        c_step %= _cap;
+        ret = true;
+    }
+
+    return ret;
 }
 
 template<class DataType>
