@@ -15,9 +15,9 @@ public:
 
     bool IsEmpty();
     bool IsFull();
-    bool PushData(const DataType &data);
-    bool PopOneData(DataType &data);
-    void PopData(std::vector<DataType> &data_arr);
+    bool PushData(const DataType &data, bool forever = false);
+    bool PopOneData(DataType &data, bool forever = false);
+    void PopData(std::vector<DataType> &data_arr, bool forever = false);
 
 private:
     int _cap;
@@ -66,9 +66,10 @@ bool RingQueue<DataType>::IsFull()
 }
 
 template<class DataType>
-bool RingQueue<DataType>::PushData(const DataType &data)
+bool RingQueue<DataType>::PushData(const DataType &data, bool forever/* = false*/)
 {
-    if (!sem_trywait(&blank_sem)) {
+    if ((!forever && !sem_trywait(&blank_sem)) ||
+        (forever && !sem_wait(&blank_sem))) {
         ring[p_step] = data;
         sem_post(&data_sem);
         p_step++;
@@ -80,10 +81,11 @@ bool RingQueue<DataType>::PushData(const DataType &data)
 }
 
 template<class DataType>
-bool RingQueue<DataType>::PopOneData(DataType &data)
+bool RingQueue<DataType>::PopOneData(DataType &data, bool forever/* = false*/)
 {
     bool ret = false;
-    if (!sem_trywait(&data_sem)) {
+    if ((!forever && !sem_trywait(&data_sem)) ||
+        (forever && !sem_wait(&data_sem))) {
         data = ring[c_step];
         sem_post(&blank_sem);
         c_step++;
@@ -95,10 +97,11 @@ bool RingQueue<DataType>::PopOneData(DataType &data)
 }
 
 template<class DataType>
-void RingQueue<DataType>::PopData(std::vector<DataType> &data_arr)
+void RingQueue<DataType>::PopData(std::vector<DataType> &data_arr, bool forever/* = false*/)
 {
     while(1) {
-        if (!sem_trywait(&data_sem)) {
+        if ((!forever && !sem_trywait(&data_sem)) ||
+            (forever && !sem_wait(&data_sem))) {
             const DataType &data = ring[c_step];
             data_arr.push_back(data);
             sem_post(&blank_sem);
