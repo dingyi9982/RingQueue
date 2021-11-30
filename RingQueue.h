@@ -187,7 +187,7 @@ void RingQueue<DataType>::PopAll(std::vector<DataType> &data_arr)
     while(1) {
         if (!sem_trywait(&data_sem)) {
             const DataType &data = ring[c_step];
-            data_arr.push_back(data);
+            data_arr.emplace_back(data);
             sem_post(&blank_sem);
             c_step++;
             c_step %= _cap;

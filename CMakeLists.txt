@@ -25,3 +25,5 @@ endif()
 
 add_executable(test_RingQueue test_RingQueue.cpp)
 target_link_libraries(test_RingQueue pthread)
+
+add_executable(test_LatestFixedQueue test_LatestFixedQueue.cpp)
