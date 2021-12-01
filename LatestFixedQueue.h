@@ -1,13 +1,23 @@
 #include <vector>
 #include <mutex>
 
-template <class DataType>
+template <typename DataType>
 class LatestFixedQueue {
 public:
   LatestFixedQueue(int cap)
-    : _size(0), _cap(cap), _front(0), _rear(-1), _ring(cap) {}
+    : _cap(cap), _ring(cap) {
+    Clear();
+  }
 
   ~LatestFixedQueue() {}
+
+  void Clear()
+  {
+    std::lock_guard<std::mutex> lock(_mutex);
+    _size = 0;
+    _front = 0;
+    _rear = -1;
+  }
 
   bool IsFull()
   {
@@ -50,7 +60,8 @@ public:
     return _size;
   }
 
-  void GetItems(std::vector<DataType>& data_arr, int maxCount = 0)
+  template <typename Func>
+  void GetItems(std::vector<DataType>& data_arr, Func func = [](DataType data) -> bool { return true;}, int maxCount = 0)
   {
     data_arr.clear();
     if (IsEmpty()) {
@@ -62,11 +73,15 @@ public:
         maxCount = Size();
       }
       int i = _front;
-      while (count < maxCount) {
-        data_arr.emplace_back(_ring[i]);
+      int j = 0;
+      while (count < maxCount && j < Size()) {
+        if (func(_ring[i])) {
+          data_arr.emplace_back(_ring[i]);
+          count++;
+        }
         i++;
         i = i % _cap;
-        count++;
+        j++;
       }
     }
   }
