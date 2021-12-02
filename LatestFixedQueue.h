@@ -60,8 +60,8 @@ public:
     return _size;
   }
 
-  template <typename Func>
-  void GetItems(std::vector<DataType>& data_arr, Func func = [](DataType data) -> bool { return true;}, int maxCount = 0)
+  template <typename FilterFunc>
+  void GetItems(std::vector<DataType>& data_arr, FilterFunc filter = [](DataType data) { return true; }, int maxCount = 0)
   {
     data_arr.clear();
     if (IsEmpty()) {
@@ -75,7 +75,7 @@ public:
       int i = _front;
       int j = 0;
       while (count < maxCount && j < Size()) {
-        if (func(_ring[i])) {
+        if (filter(_ring[i])) {
           data_arr.emplace_back(_ring[i]);
           count++;
         }

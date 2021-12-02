@@ -13,8 +13,7 @@ int main()
   queue.Push(a);
 
   std::vector<std::vector<float>> data_arr;
-  // queue.GetItems(data_arr, 1);
-  queue.GetItems(data_arr, [](std::vector<float> data) -> bool {
+  queue.GetItems(data_arr, [](std::vector<float> data) {
                   return true;
                 }, 1);
   for (auto data : data_arr) {
@@ -25,7 +24,7 @@ int main()
   }
 
   queue.Push(b);
-  queue.GetItems(data_arr, [](std::vector<float> data) -> bool {
+  queue.GetItems(data_arr, [](std::vector<float> data) {
                   return true;
                 });
   for (auto data : data_arr) {
