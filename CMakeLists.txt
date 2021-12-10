@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 2.8)
+cmake_minimum_required(VERSION 3.14)
 
 project(RingQueue)
 
@@ -27,3 +27,5 @@ add_executable(test_RingQueue test_RingQueue.cpp)
 target_link_libraries(test_RingQueue pthread)
 
 add_executable(test_LatestFixedQueue test_LatestFixedQueue.cpp)
+
+add_executable(test_PriorityFixedQueue test_PriorityFixedQueue.cpp)
