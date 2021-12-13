@@ -13,7 +13,7 @@ public:
     }
   }
 
-  void GetItems(std::vector<DataType>& data_arr) {
+  void PopAll(std::vector<DataType>& data_arr) {
     data_arr.resize(_q.size());
     while (_q.size()) {
       data_arr[_q.size() - 1] = _q.top();

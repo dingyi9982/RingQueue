@@ -11,7 +11,7 @@ int main()
   queue.Push(5);
 
   std::vector<int> data_arr;
-  queue.GetItems(data_arr);
+  queue.PopAll(data_arr);
   for(auto data: data_arr) {
     std::cout << data << " ";
   }
