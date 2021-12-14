@@ -29,7 +29,7 @@ public:
     return _size <= 0;
   }
 
-  void Push(DataType item)
+  void Push(const DataType& item)
   {
     std::lock_guard<std::mutex> lock(_mutex);
     if (IsFull()) {
