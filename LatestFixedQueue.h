@@ -4,7 +4,7 @@
 template <typename DataType>
 class LatestFixedQueue {
 public:
-  LatestFixedQueue(int cap)
+  explicit LatestFixedQueue(int cap)
     : _cap(cap), _ring(cap) {
     Clear();
   }
@@ -19,12 +19,12 @@ public:
     _rear = -1;
   }
 
-  bool IsFull()
+  bool IsFull() const
   {
     return _size >= _cap;
   }
 
-  bool IsEmpty()
+  bool IsEmpty() const
   {
     return _size <= 0;
   }
@@ -55,7 +55,7 @@ public:
     }
   }
 
-  int Size()
+  int Size() const
   {
     return _size;
   }

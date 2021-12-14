@@ -1,11 +1,11 @@
-#include <queue>
 #include <mutex>
+#include <queue>
 
 template <typename DataType> class DescendingFixedQueue {
 public:
-  DescendingFixedQueue(int cap) : _cap(cap) {}
-  
-void Push(const DataType& value) {
+  explicit DescendingFixedQueue(int cap) : _cap(cap) {}
+
+  void Push(const DataType& value) {
     std::lock_guard<std::mutex> lock(_mutex);
     if (static_cast<int>(_q.size()) < _cap)
       _q.push(value);
@@ -32,7 +32,7 @@ private:
 
 template <typename DataType> class AscendingFixedQueue {
 public:
-  AscendingFixedQueue(int cap) : _cap(cap) {}
+  explicit AscendingFixedQueue(int cap) : _cap(cap) {}
 
   void Push(const DataType& value) {
     std::lock_guard<std::mutex> lock(_mutex);

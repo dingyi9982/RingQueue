@@ -15,14 +15,14 @@ template <class DataType>
 class RingQueue
 {
 public:
-    RingQueue(int cap);
+    explicit RingQueue(int cap);
     ~RingQueue();
 
     void Reset();
 
 #ifndef __APPLE__
-    bool IsEmpty();
-    bool IsFull();
+    bool IsEmpty() const;
+    bool IsFull() const;
 #endif
 
     bool Push(const DataType &data, bool forever = false);
@@ -79,7 +79,7 @@ RingQueue<DataType>::~RingQueue()
 
 #ifndef __APPLE__
 template<class DataType>
-bool RingQueue<DataType>::IsEmpty()
+bool RingQueue<DataType>::IsEmpty() const
 {
     int data_sem_value = 0;
     sem_getvalue(&data_sem, &data_sem_value);
@@ -87,7 +87,7 @@ bool RingQueue<DataType>::IsEmpty()
 }
 
 template<class DataType>
-bool RingQueue<DataType>::IsFull()
+bool RingQueue<DataType>::IsFull() const
 {
     int blank_sem_value = 0;
     sem_getvalue(&blank_sem, &blank_sem_value);
