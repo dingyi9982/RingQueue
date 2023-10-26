@@ -1,11 +1,12 @@
-#include <vector>
 #include <mutex>
+#include <vector>
 
 template <typename DataType>
 class LatestFixedQueue {
 public:
   explicit LatestFixedQueue(int cap)
-    : _cap(cap), _ring(cap) {
+    : _cap(cap), _ring(cap)
+  {
     Clear();
   }
 
@@ -53,6 +54,7 @@ public:
       data = _ring[_front];
       _front = (_front + 1) % _cap;
     }
+    return true;
   }
 
   int Size() const
@@ -61,7 +63,10 @@ public:
   }
 
   template <typename FilterFunc>
-  void GetItems(std::vector<DataType>& data_arr, FilterFunc filter = [](DataType data) { return true; }, int maxCount = 0)
+  void GetItems(
+      std::vector<DataType>& data_arr,
+      FilterFunc filter = [](DataType data) { return true; },
+      int maxCount = 0)
   {
     data_arr.clear();
     if (IsEmpty()) {
